@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: .
+    container_name: telco-backend
+    image: telco-backend
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ../telco-product-catalog-frontend/telco-product-catalog-ui
+    container_name: telco-frontend
+    image: telco-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
