@@ -190,18 +190,19 @@ public class ProductImportService {
 
                 product.setName(name);
                 product.setManufacturer(manufacturer != null ? manufacturer : product.getManufacturer());
-                product.setFinalPriceHuf(finalPriceHuf != null ? finalPriceHuf : product.getFinalPriceHuf());
+
+                if (finalPriceHuf != null) {
+                    product.setFinalPriceHuf(finalPriceHuf);
+                } else if (product.getFinalPriceHuf() == null) {
+                    product.setFinalPriceHuf(java.math.BigDecimal.ZERO);
+                }
+
                 product.setStock(stock != null ? stock : product.getStock());
                 product.setEan(ean != null ? ean : product.getEan());
                 product.setUpdatedAt(updatedAt);
                 product.setSource("JSON");
                 product.setValid(valid);
                 product.setValidationErrors(errors);
-
-                if (product.getFinalPriceHuf() == null) {
-                    System.out.println("Skipping JSON product without price, SKU=" + normalizedSku);
-                    continue;
-                }
 
                 productRepository.save(product);
                 count++;
